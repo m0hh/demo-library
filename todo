@@ -1,5 +1,0 @@
-romve unqiue from borrow and handle returns
-
-documents add that I didn't make validation on the DB side for not null for increased perf
-document added Integer for id bcz system is small
-weused containing which yield like operation because number of rows is not huge so it is fitting

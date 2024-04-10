@@ -13,6 +13,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class PatronService {
@@ -26,14 +29,29 @@ public class PatronService {
         return patronRepo.save(patron);
     }
 
-    public Page<Patron> listAllPatronsName(String name, Integer page){
+    public List<PatronDTO> listAllPatronsName(String name, Integer page){
         Pageable pageable = PageRequest.of(page, 10);
-        return  patronRepo.findByNameContaining(name, pageable);
+        Page<Patron>  patrons =  patronRepo.findByNameContaining(name, pageable);
+        return  patrons.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
-    public Page<Patron> listAllPatrons(Integer page){
+    public List<PatronDTO> listAllPatrons(Integer page){
         Pageable pageable = PageRequest.of(page, 10);
-        return  patronRepo.findAll(pageable);
+        Page<Patron> patrons =  patronRepo.findAll(pageable);
+        return patrons.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+    private PatronDTO convertToDTO(Patron patron) {
+        PatronDTO dto = new PatronDTO();
+        dto.setId(patron.getId());
+        dto.setName(patron.getName());
+        dto.setEmail(patron.getEmail());
+        dto.setPhone(patron.getPhone());
+
+        return dto;
     }
 
     public  Patron getPatronId(Integer id){

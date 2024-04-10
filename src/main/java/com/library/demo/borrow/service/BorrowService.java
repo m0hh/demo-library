@@ -48,7 +48,11 @@ public class BorrowService {
     public Borrow returnBook(Integer book_id, Integer patron_id){
         Book book = bookRepo.findById(book_id).orElseThrow(NotFoundExecption::new);
         Patron patron =  patronRepo.findById(patron_id).orElseThrow(NotFoundExecption::new);
-        Borrow borrow = borrowRepo.findByBookAndPatronAndReturnedAtIsNull(book, patron).get(0);
+        List<Borrow> borrows = borrowRepo.findByBookAndPatronAndReturnedAtIsNull(book, patron);
+        if (borrows.isEmpty()){
+            throw new NotFoundExecption();
+        }
+        Borrow borrow = borrows.get(0);
         borrow.setReturnedAt(LocalDateTime.now());
 
         return borrowRepo.save(borrow);

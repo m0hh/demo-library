@@ -20,14 +20,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/patron")
+@RequestMapping("/api/patrons")
 @AllArgsConstructor
 public class PatronController {
 
     @Autowired
     private final PatronService patronService;
 
-    @PostMapping("/add")
+    @PostMapping("")
     public Patron addPatron(@RequestBody @Valid Patron patron, final BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             List<String> errors = bindingResult.getAllErrors().stream().map(e -> e.getDefaultMessage()).collect(Collectors.toList());
@@ -37,8 +37,8 @@ public class PatronController {
         return patronService.addNewPatron(patron);
     }
 
-    @GetMapping("/list")
-    public Page<Patron> listPatrons(
+    @GetMapping("")
+    public List<PatronDTO> listPatrons(
             @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "page", required = false) Integer page
     ){
@@ -54,17 +54,17 @@ public class PatronController {
     }
 
     @Cacheable("application")
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public Patron getPatron(@PathVariable Integer id){
         return patronService.getPatronId(id);
     }
 
-    @PatchMapping("/update/{id}")
+    @PutMapping("/{id}")
     public Patron updatePatron(@PathVariable Integer id, @RequestBody PatronDTO dto) {
         return patronService.updatePatron(id, dto);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePatron(@PathVariable Integer id){
         patronService.deletePatron(id);
         return ResponseEntity.noContent().build();

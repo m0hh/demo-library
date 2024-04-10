@@ -4,12 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+@Slf4j
 @ControllerAdvice
 public class ApiExceptionHandler {
     @ExceptionHandler(value = {ApiRequestException.class})
@@ -49,6 +51,17 @@ public class ApiExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
+        log.error(e.getMessage(),e);
         return new ResponseEntity<>(apiException, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(value = {BadCredentialsException.class})
+    public ResponseEntity<Object> handlerBadCrentials(Exception e){
+        ApiException apiException =  new ApiException(
+                "Bad Credentials",
+                HttpStatus.UNAUTHORIZED,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, HttpStatus.UNAUTHORIZED);
     }
 }

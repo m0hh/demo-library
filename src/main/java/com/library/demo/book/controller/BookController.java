@@ -20,14 +20,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/book")
+@RequestMapping("api/books")
 @AllArgsConstructor
 public class BookController {
 
     @Autowired
     private final BookService bookService;
 
-    @PostMapping("/add")
+    @PostMapping("")
     public Book addBook(@RequestBody @Valid Book book,  final BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             List<String> errors = bindingResult.getAllErrors().stream().map(e -> e.getDefaultMessage()).collect(Collectors.toList());
@@ -37,7 +37,7 @@ public class BookController {
         return bookService.addNewBook(book);
     }
 
-    @GetMapping("/list")
+    @GetMapping("")
     public Page<Book> listBooks(
             @RequestParam(name = "title", required = false) String title,
             @RequestParam(name = "page", required = false) Integer page
@@ -54,17 +54,17 @@ public class BookController {
     }
 
     @Cacheable("application")
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public Book getBook(@PathVariable Integer id){
         return bookService.getBookId(id);
     }
 
-    @PatchMapping("/update/{id}")
+    @PutMapping("/{id}")
     public Book updateBook(@PathVariable Integer id, @RequestBody BookDTO dto) {
         return bookService.updateBook(id, dto);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable Integer id){
         bookService.deleteBook(id);
         return ResponseEntity.noContent().build();

@@ -48,6 +48,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             List<String> errors = bindingResult.getAllErrors().stream().map(e -> e.getDefaultMessage()).collect(Collectors.toList());
             String errorMessage = String.join(", ", errors);
+            System.out.println(errorMessage);
             throw new ApiRequestException(errorMessage);
         }
 
@@ -70,6 +71,7 @@ public class UserController {
 
     @PostMapping("/login_user")
     public ResponseEntity<UserResponse> login(@RequestBody UserRequest request){
+
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getUsername(), request.getPassword()));

@@ -1,5 +1,6 @@
 package com.library.demo.user.service;
 
+import com.library.demo.exeption.ApiRequestException;
 import com.library.demo.user.entity.User;
 import com.library.demo.user.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,23 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepo userRepo;
 
+
+
     @Autowired
     private BCryptPasswordEncoder bCryptEncoder;
 
     public Integer saveUser(User user) {
 
         user.setPassword(bCryptEncoder.encode(user.getPassword()));
-        return userRepo.save(user).getId();
+        try {
+            return userRepo.save(user).getId();
+        }catch (Exception e){
+            if (e.getMessage().contains("already exists")){
+                throw new ApiRequestException("username already exists");
+            }else{
+                throw  e;
+            }
+        }
     }
 
 

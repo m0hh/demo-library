@@ -2,7 +2,9 @@ package com.library.demo.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 import java.util.Set;
@@ -19,19 +21,28 @@ public class User {
     @Column(name="id")
     private Integer id;
 
-    @NotNull(message = "Must Enter a username")
+
+    @NotBlank(message = "Must Enter a username")
     @Column(name="user_name")
     private String username;
 
-    @NotNull
+    @NotBlank(message = "Must Enter a password")
     @Column(name="user_passwd")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @NotBlank(message = "You must enter a name")
+    @Column(name="name")
+    private String name;
+
+    @NotBlank(message = "You must enter an email")
     @Column(name="user_email")
+    @Email(message = "must enter a valid email")
     private String email;
 
+    @NotBlank(message = "You must enter a phone")
     @Column(name="user_phone")
+    @Pattern(regexp = "[+-]?\\d+", message = "must enter only digits")
     private String phone;
 
     @ElementCollection(fetch= FetchType.EAGER)
@@ -40,7 +51,6 @@ public class User {
             joinColumns = @JoinColumn(name="user_id")
     )
     @Column(name="user_role")
-    @NotNull
     private Set<String> roles;
 
 }

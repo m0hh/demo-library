@@ -9,9 +9,18 @@ spring:
         url: jdbc:postgresql://localhost:5432/demo
     config:
         import: db.yaml
-        jpa:
-            database-platform: org.hibernate.dialect.PostgreSQLDialect
-            hibernate:
-                ddl-auto: none
-            show-sql: true
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        hibernate:
+            ddl-auto: none
+        show-sql: true
 
+
+logging:
+    level:
+        org:
+            springframework:
+                web: DEBUG
+            hibernate: ERROR
+        net:
+            guides: DEBUG

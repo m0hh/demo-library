@@ -1,0 +1,3 @@
+ALTER TABLE users ADD CONSTRAINT unique_username UNIQUE (user_name);
+ALTER TABLE users ALTER COLUMN user_name SET NOT NULL;
+ALTER TABLE users ALTER COLUMN user_passwd SET NOT NULL;

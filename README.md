@@ -141,6 +141,15 @@ any invalid credentials
 }
 ```
 
+
+### Note:
+all the upcoming requests require that you provide a valid token in the headers
+
+example
+Authorization: eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI4ODAyIiwic3ViIjoidGVzdCIsImlzcyI6IkFCQ19MdGQiLCJhdWQiOiJYWVpfTHRkIiwiaWF0IjoxNzEyNzY5MDA0LCJleHAiOjE3MTI3NzI2MDR9.69AUXMWAQU4SsTKAMOlw4G9DNlgEMqL_dwaW8M4S7OgUo9qZbOcmjbkBLKrX9ORIvM-fynTNpfGM6VmwASkzdQ
+
+don't add Bearer or Token just paste the token in directly
+
 ## Book
 
 ### Add Book
